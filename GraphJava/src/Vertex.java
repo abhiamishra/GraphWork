@@ -1,6 +1,8 @@
 
 public class Vertex {
 	private String label = "";
+	private int weight = 0;
+	private String prevNode = "";
 	public String getLabel() {
 		return label;
 	}
@@ -10,7 +12,11 @@ public class Vertex {
 	public Vertex(String label) {
 		this.label = label;
 	}
-	
+	public Vertex(String label, int weight, String prevNode) {
+		this.label = label;
+		this.weight = weight;
+		this.prevNode = prevNode;
+	}
 	public Vertex() {
 		// TODO Auto-generated constructor stub
 	}
@@ -37,5 +43,17 @@ public class Vertex {
 		} else if (!label.equals(other.label))
 			return false;
 		return true;
+	}
+	public int getWeight() {
+		return weight;
+	}
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+	public String getPrevNode() {
+		return prevNode;
+	}
+	public void setPrevNode(String prevNode) {
+		this.prevNode = prevNode;
 	}
 }

@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class Graph {
 	private Map<Vertex, List<Vertex>> adjList = new HashMap<>();
+	private Set<Vertex> setofVertices = new HashSet<>();
 	int n=0;
 	private int[][] adjMatrix = new int[n][n];
 	private HashMap<String, Integer> listNames = new HashMap<>();
@@ -17,11 +20,13 @@ public class Graph {
 			}
 		}
 	}
+
 	
 	public void addVertex(String label) {
 		adjList.putIfAbsent(new Vertex(label), new ArrayList<>());
 		int[][] newMatrix = new int[n+1][n+1];
 		listNames.put(label, n);
+		setofVertices.add(new Vertex(label));
 		
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
@@ -47,7 +52,7 @@ public class Graph {
 		Vertex v = new Vertex(label);
 		adjList.values().stream().forEach(e -> e.remove(v));
 		adjList.remove(new Vertex(label));
-		
+		setofVertices.remove(new Vertex(label));
 		int location = listNames.get(label);
 		for(int i=location; i<location+1; i++) {
 			for(int j=0; j<n; j++) {
@@ -61,11 +66,21 @@ public class Graph {
 		}
 	}
 	
-	public void addEdge(String ver1, String ver2) {
+	public void addEdge(String ver1, String ver2, int weight) {
 		Vertex vertex1 = new Vertex(ver1);
 		Vertex vertex2 = new Vertex(ver2);
+		
 		adjList.get(vertex1).add(vertex2);
+	
+		List<Vertex> toAdd = adjList.get(vertex1);
+		vertex1.setWeight(weight);
+		adjList.put(vertex1, toAdd);
+		
 		adjList.get(vertex2).add(vertex1);
+		
+		toAdd = adjList.get(vertex2);
+		vertex2.setWeight(weight);
+		adjList.put(vertex2, toAdd);
 		
 		int location = listNames.get(ver1);
 		int location2 = listNames.get(ver2);
@@ -117,6 +132,16 @@ public class Graph {
 			}
 			System.out.println();
 		}
+	}
+
+
+	public Set<Vertex> getSetofVertices() {
+		return setofVertices;
+	}
+
+
+	public void setSetofVertices(Set<Vertex> setofVertices) {
+		this.setofVertices = setofVertices;
 	}
 	
 }
